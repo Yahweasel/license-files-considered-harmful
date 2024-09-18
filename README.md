@@ -2,7 +2,7 @@
 
 I do not put license text in the LICENSE files of repositories, and indeed would prefer not to have LICENSE files at all. The reason is not that I'm particularly blaise about licenses; in fact, the reason is exactly the opposite. It is my opinion that putting license information in a LICENSE file, while obviously convenient, is doing much more harm than good.
 
-My license text is stored in the licensed files, in standard, common license headers. For libraries I often use [SPDX license headers](https://spdx.org/licenses/), though I'll admit I'm not completely consistent with that.
+My license text is stored in the licensed files, in plain old fashioned license comments. I mark the license correctly on repositories when I remember to. For libraries I often use [SPDX license headers](https://spdx.org/licenses/), though I'll admit I'm not completely consistent with that.
 
 To describe why I think LICENSE files do more harm than good, I'll describe the problem and use an example of a project that tries to do it right, but fails.
 
