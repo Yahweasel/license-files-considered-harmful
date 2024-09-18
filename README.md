@@ -47,9 +47,9 @@ This is a particularly egregious case because of the sheer complexity of FFmpeg,
 
 To be clear, in terms of work for software users, putting license text only in source files is much, much worse. Just reading the LICENSE file is really easy. It's just also invalid almost all of the time.
 
-The reason why putting licenses in licensed source files is better is because said licenses don't drift and become unmaintained in the same way as LICENSE files. The thing that makes LICENSE files go bad is adding things that affect the licensing requirements without updating the LICENSE file. Most programmers are codewise enough to realize that if they extract a section of code from one file and put it in another, that action is affected by the license of the donor file But, most programmers are *not* codewise enough to realize that if they copy a file into their distribution wholesale, and its license is compatible, they will also have to make sure that their LICENSE file—which is just documentation, not code—is kept up to date with the code changes they've made.
+The reason why putting licenses in licensed source files is better is because said licenses don't drift and become unmaintained in the same way as LICENSE files. The thing that makes LICENSE files go bad is adding things that affect the licensing requirements without updating the LICENSE file. Most programmers are codewise enough to realize that if they extract a section of code from one file and put it in another, that action is affected by the license of the donor file. But, most programmers are *not* codewise enough to realize that if they copy a file into their distribution wholesale, and its license is compatible, they will also have to make sure that their LICENSE file—which is just documentation, not code—is kept up to date with the code changes they've made.
 
-Detaching license information from the text it applies to is easy if that text is in a separate file. If the text under license is in the same file as the license, then detaching it is a willingly malicious act.
+Detaching license information from the text it applies to is easy if that text is in a separate file. If the text under license is in the same file as the license, then detaching it is a willfully malicious act.
 
 
 ## LICENSE Files Considered Harmful (redux)
