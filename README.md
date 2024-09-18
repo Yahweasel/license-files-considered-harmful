@@ -1,5 +1,3 @@
-# LICENSE Files Considered Harmful
-
 tl;dr: LICENSE files are unmaintainable, and when they're out of date or incorrect, they mislead people into violating licenses. Their presence does more harm than good.
 
 I do not put license text in the LICENSE files of repositories, and indeed would prefer not to have LICENSE files at all. The reason is not that I'm particularly blaise about licenses; in fact, the reason is exactly the opposite. It is my opinion that putting license information in a LICENSE file, while obviously convenient, is doing much more harm than good.
