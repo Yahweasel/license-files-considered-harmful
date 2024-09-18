@@ -30,7 +30,7 @@ Preface: I *love* FFmpeg. This is not a complaint about FFmpeg. And, FFmpeg is *
 
 Let's say you're writing a piece of software that's going to use FFmpeg's libraries. FFmpeg is under the LGPL, which, surprisingly, is one of the few licenses that doesn't quite require attribution. But, since it requires providing the complete source code, I suppose the authors assumed that sufficed. You are required to inform users that the source code for this component is available, and tell them where they can get it.
 
-But, not every file in FFmpeg is under the LGPL. For example, `libavcodec/jfdctfst.c` is under a 3-clause BSD license. That license includes the requirement that «the accompanying documentation must state that "this software is based in part on the work of the Independent JPEG Group"». Luckily for us, the LICENSE.md file in FFmpeg makes that clear: it states unambiguously that the whole is under the LGPL, but some parts, including `libavcodec/jfdctfst.c` are under other licenses. So, great, problem solved, right?
+But, not every file in FFmpeg is under the LGPL. For example, `libavcodec/jfdctfst.c` is under the JPEG license. That license includes the requirement that «the accompanying documentation must state that "this software is based in part on the work of the Independent JPEG Group"». Luckily for us, the LICENSE.md file in FFmpeg makes that clear: it states unambiguously that the whole is under the LGPL, but some parts, including `libavcodec/jfdctfst.c` are under other licenses. So, great, problem solved, right?
 
 Well, the thing *I'm* using in FFmpeg is its newish `arnndn` filter. So, I dutifully look in the LICENSE file, and everything seems fine, so I add no special attribution.
 
