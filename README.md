@@ -80,7 +80,7 @@ At the top of every source file, I include a standard licensing information head
 
 How I manage License Hell depends on the programming language. Languages in which the distributed code is in a text form often make attribution (a bit) easier.
 
-For C/C++, I do exactly what I suggested above: meticulously go through every source file looking for license information. `grep` is your friend for this. It sucks, but it is not an act of kindness of virtue; it is a contractual mandate.
+For C/C++, I do exactly what I suggested above: meticulously go through every source file looking for license information. `grep` is your friend for this. It sucks, but it is not an act of kindness or virtue; it is a contractual mandate.
 
 For, e.g., TypeScript/JavaScript, I make sure to use `/*!` for all my own license comments, and make sure to use minifiers that keep common license patterns, which include `/*!` and `/* @license`. A lot of software in this space *is* wise enough to mark their headers in this way.
 
