@@ -1,87 +1,94 @@
-tl;dr: LICENSE files are unmaintainable, so they're always out of date or incorrect. This misleads people into violating licenses. Their presence does more harm than good.
+**TL;DR:** LICENSE files are unmaintainable and often out of date, leading to inadvertent license violations. Their presence does more harm than good.
 
-I do not put license text in the LICENSE files of repositories, and indeed would prefer not to have LICENSE files at all. The reason is not that I'm particularly blasé about licenses; in fact, the reason is exactly the opposite. It is my opinion that putting license information in a LICENSE file, while obviously convenient, is doing much more harm than good.
+I choose not to include license text in the LICENSE files of repositories, and would even prefer not to have LICENSE files at all. This isn't because I'm unconcerned about licenses; quite the opposite. I believe that putting license information in a LICENSE file, while convenient, actually does more harm than good, for one critical reason: it splits the license text—which is a *legal contract*—from the content that it licenses.
 
-My license text is stored in the licensed source files, in plain old-fashioned license comments, never LICENSE files. If, after reading this, you agree with my concerns about LICENSE files, I recommend you adopt the same behavior, and include some advice at the end of this rant.
+Instead, I store license text in the source files themselves, as traditional license comments—not in LICENSE files. If you agree with my concerns after reading this, I recommend adopting a similar approach, and I give some advice on doing so at the end of this document.
 
-(In addition, I mark the license correctly on repositories when I remember to. For libraries I often use [SPDX license headers](https://spdx.org/licenses/), though I'll admit I'm not completely consistent with that.)
+(When I remember, I also mark the license correctly in the repository metadata. For libraries, I often use [SPDX license headers](https://spdx.org/licenses/), though I'm not entirely consistent with this.)
 
-To describe why I think LICENSE files do more harm than good, I'll describe the problem and use an example of a project that tries to do it right, but fails.
-
-
-## The problem
-
-Almost all open source licenses require attribution in binaries that link against them. For all of our obsession with licenses, open source programmers are bizarrely terrible at following this requirement. To be abundantly clear: if you include any code that is under, for instance, the MIT license, you must include along with that code, in source or binary form, the license and its copyright list. And, most other open-source licenses have similar documentation requirements.
-
-If you don't realize this or don't believe me, look in the “about” window of the browser you're using right now. There will be a “licensing info” or “open source software” link with an extremely exhaustive list of all the software they use, and their licenses. This is not just authors politely giving credits (although it is that too); it is a contractual mandate.
-
-Ideally, this would be something that could be handled with linking. To a very limited extent, in the world of TypeScript/JavaScript, it is, as comments can usually be made in such a way that minifiers won't remove them, and that suffices. But, this is rarely done correctly in TypeScript or JavaScript, and doesn't apply to, for example, C.
-
-The unfortunate reality is that the only correct way to know what license text you need is to go over all of the source you use meticulously and collate all its license text.
-
-That job *would* be made easier by LICENSE files.
-
-It *would* be. If LICENSE files weren't useless.
+To explain why I think LICENSE files are more harmful than helpful, I'll walk through the problem and use an example of a project that attempts to “do it right,” but ultimately fails.
 
 
-## An object lesson: FFmpeg
+## The Problem
 
-Preface: I *love* FFmpeg. This is not a complaint about FFmpeg. And, FFmpeg is *trying* to do this right. But, FFmpeg's failure in this matter is a perfect demonstration of the problem.
+Almost all open-source licenses require attribution in binaries that link against them. Yet, for all the attention we give to licenses, open-source developers are notoriously bad at following this requirement. Let me be clear: if you include code that is, for example, licensed under MIT, you *must* include the license and copyright notice with that code—whether in source or binary form. Most other open-source licenses have similar documentation requirements.
 
-Let's say you're writing a piece of software that's going to use FFmpeg's libraries. FFmpeg is under the LGPL, which, surprisingly, is one of the few licenses that doesn't quite require per se attribution. Of course, that's because it requires that you provide access to the source code. You don't actually have to include the source code in the same distribution, and of course, for practical reasons, no one does.
+If you don't believe me, check the “About” section of the browser you're using right now. You'll find a “Licensing Info” or “Open Source Software” link, listing all the software they use and their respective licenses. This isn't just a nice gesture; it’s a legal obligation.
 
-Not every file in FFmpeg, however, is licensed under the LGPL. For example, `libavcodec/jfdctfst.c` is under the JPEG license. That license includes the requirement that «the accompanying documentation must state that "this software is based in part on the work of the Independent JPEG Group"». Luckily for us, the LICENSE.md file in FFmpeg makes that clear: it states unambiguously that the whole is under the LGPL, but some parts, including `libavcodec/jfdctfst.c` are under other licenses. It even says exactly what you need to do for `jfdctfst.c`. So, great, problem solved, right?
+Ideally, this would be handled by a smart linker. To a small extent it can be, for languages that are distributed in textual form, particularly in TypeScript/JavaScript, where comments can be preserved by minifiers. But this is rarely done correctly and doesn't apply to languages like C.
 
-Well, the thing *I'm* using in FFmpeg is its newish `arnndn` filter. I dutifully look in the LICENSE file, and there's no mention of `af_arnndn.c`. Everything seems fine, so I add no special attribution.
+The unfortunate truth is that the only way to know what attribution text you need is to go through all the source code you use and compile its license information yourself.
 
-And, I've just violated the license of the half-dozen authors of that file. It's distributed under the MIT license, which includes the requirement that «Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution». Maybe, *maybe* you could argue that the source code is “other materials provided with the distribution”, since you have to provide the source code under LGPL anyway. But, that's a stretch; unless you actually attach the source code along with the binaries, it's not *provided with*, it's just *offered*. Following the lesson of your web browser, providing the source really doesn't satisfy this requirement.
+LICENSE files *could* make this job easier.
 
-So, what went wrong? What went wrong is that you assumed the authors of FFmpeg would do the work you yourself were avoiding doing: meticulously cataloging the particular attribution requirements of every single file you depend upon. But, they failed. The LICENSE.md file of FFmpeg is flatly incorrect, and misleading, because it's not maintained.
-
-Whose job is it to maintain this file? Who would *want* that job? Of course it's not maintained!
-
-This is a particularly egregious case because of the sheer complexity of FFmpeg, but rare is the LICENSE file that's well maintained. Even if it's maintained for the software itself (which usually only happens when that's trivial), it rarely suggests that dependencies may have their own licensing requirements. The best LICENSE file is one that simply explains that the actual text of the license is in licensed files, and you'll need to find it there.
+They *could*—if LICENSE files weren't always wrong.
 
 
-## How is this better?
+## An Object Lesson: FFmpeg
 
-To be clear, in terms of work for software users, putting license text only in source files is much, much worse. Just reading the LICENSE file is really easy. It's just also invalid almost all of the time.
+I love FFmpeg. This is not a criticism of FFmpeg, but its license file (called `COPYING` in the FFmpeg repository) illustrates the problem perfectly.
 
-The reason why putting licenses in licensed source files is better is because said licenses don't drift and become unmaintained in the same way as LICENSE files. The thing that makes LICENSE files go bad is adding things that affect the licensing requirements without updating the LICENSE file. Most programmers are codewise enough to realize that if they extract a section of code from one file and put it in another, that action is affected by the license of the donor file. But, most programmers are *not* codewise enough to realize that if they copy a file into their distribution wholesale, and its license is compatible, they will also have to make sure that their LICENSE file—which is just documentation, not code—is kept up to date with the code changes they've made.
+Let's say you're writing software that uses FFmpeg's libraries. FFmpeg is licensed under LGPL, which—surprisingly—is one of the few licenses that doesn't require attribution per se, as long as you provide access to the source code. You don't need to bundle the source with your distribution, and for practical reasons, most people don't.
 
-Detaching license information from the text it applies to is easy if that text is in a separate file. If the text under license is in the same file as the license, then detaching it is a willfully malicious act.
+However, not all files in FFmpeg are licensed under LGPL. For example, `libavcodec/jfdctfst.c` is under the JPEG license, which requires that “the accompanying documentation must state that this software is based in part on the work of the Independent JPEG Group.” Fortunately, the LICENSE.md file in FFmpeg makes this clear. It explains that most of FFmpeg is under LGPL, but some parts, like `libavcodec/jfdctfst.c`, fall under different licenses, and it even tells you how to comply with those requirements. Problem solved, right?
+
+Not quite.
+
+Let's say that the part of FFmpeg I'm using is the `arnndn` filter. When I check the LICENSE.md file, there's no mention of `af_arnndn.c`. Everything looks fine, so I don't add any special attribution.
+
+And now, I’ve violated the license of the authors of that file. `af_arnndn.c` is licensed under MIT, which requires that redistributions in binary form reproduce the copyright notice and license text. You could argue that providing the source code under LGPL satisfies this requirement, but that's a stretch. Unless you're bundling the source code directly with the binaries, you're probably not in compliance.
+
+So, what went wrong? You assumed that the FFmpeg maintainers had done the work you were avoiding: meticulously cataloging the licensing requirements of every single file. But they didn’t, and FFmpeg's license file is incorrect and misleading because it hasn't been maintained.
+
+Why isn't it maintained? Because, who would want to maintain that file? No one. Programmers want to program, not fight attribution requirements.
+
+This issue is particularly visible in complex projects like FFmpeg, but most LICENSE files are poorly maintained, even in simpler projects. The best LICENSE file is one that simply directs you to find the relevant licenses in the source files themselves.
 
 
-## LICENSE Files Considered Harmful (redux)
+## Why Is This Better?
 
-The very presence of a LICENSE file implies greater clarity and certainty than most open source authors are actually willing to provide. If we attempt to follow the license but naïvely assume that the LICENSE file is correct, nine times out of ten we will be misled.
+From the perspective of the user of a software library, putting license text only in the source files is more work. Reading a LICENSE file is easier. But, it’s usually inaccurate, and all the ease of use in the world won’t account for being wrong.
 
-I wish I could offer a better solution than “dig through everything and try to find all the licenses”. I really do. But creating a file that hides the complexity behind a lie does *not* achieve that goal.
+The reason why including licenses only in the source files is better is that it avoids the problem of drift. LICENSE files often become out of date because programmers forget to update them when they modify code or add dependencies. Of course, simple modifications do not require any change, but transplanting code—a valid and even commendable act in the open-source community—does, as does adding dependencies. The LICENSE file is documentation, not code, and requires careful human scrutiny to keep it up to date. We cannot expect programmers to maintain it, and yet we do.
+
+By keeping license information only in the same file as the licensed code, we greatly increase the chances that it remains accurate. Separating the two invites error.
 
 
-## How to make your licensing clear
+## LICENSE Files Considered Harmful (Redux)
 
-Because some people are comforted by the presence of a LICENSE file, I *do* usually include one, but only to make clear that the text of the license isn't actually there. Instead, I create a LICENSE.md templated on the following:
+The mere presence of a LICENSE file implies clarity and certainty that often doesn’t exist. Trying to follow the license while assuming the LICENSE file is accurate inevitably leads to license violations when it so frequently is not.
+
+I wish I had a better solution than “sift through everything and find all the licenses.” I don’t. But, creating a LICENSE file that obscures that complexity with a lie is not a solution.
+
+
+## How to Make Your Licensing Clear
+
+Since some people expect a LICENSE file, I usually include one, but only to explain that the actual license text is in the source files. Here’s a template for a LICENSE.md file:
 
 ```
 <short name of license used by most of the source code>.
 
-The license text of this code is in the licensed files, where it belongs.
-Putting license text in LICENSE files
-[does more harm than good](https://yahweasel.github.io/license-files-considered-harmful/).
+The license text for this code is in the source files.
+[LICENSE files do more harm than good](https://yahweasel.github.io/license-files-considered-harmful/).
 
-This file is here because some people are comforted by its presence.
+This file exists because some people expect it to be here.
 ```
 
-At the top of every source file, I include a standard licensing information header. For short licenses, such as the MIT license, this is the entire license. For long licenses, this is just a license notification and information on where to find the text of the license.
+At the top of each source file, I include a standard license header. For short licenses like MIT, this means the entire license. For longer licenses, it’s just a notification and a pointer to the full license text.
 
 
 ## Managing License Hell
 
-How I manage License Hell depends on the programming language. Languages in which the distributed code is in a text form often make attribution (a bit) easier.
+Managing your license attribution obligations is complicated. An automated solution would be ideal, but I know of none that are satisfactory. [SPDX](https://spdx.org/licenses/) is a good start, as it at least provides a basis for automation to find license information, but I think it slightly misses the point; the SPDX guidelines encourage you to include only the license short name in the file and to include the license text in a LICENSE file, but that makes code transplantation just as dangerous with SPDX as it is without. The way I use SPDX is to include the SPDX metadata *and* the full license text.
 
-For C/C++, I do exactly what I suggested above: meticulously go through every source file looking for license information. `grep` is your friend for this. It sucks, but it is not an act of kindness or virtue; it is a contractual mandate.
+Tools exist to manage compliance, such as [FOSSology](https://www.fossology.org/). Personally, I find them to be more intrusive than just `grep`ing source files, but I imagine that for sufficiently large, complex projects, these tools are extremely useful. In my opinion, the right way to write code that these tools will understand is to follow my advice: put the license text in the source files, not a LICENSE file, so that FOSSology will definitely find it.
 
-For, e.g., TypeScript/JavaScript, I make sure to use `/*!` for all my own license comments, and make sure to use minifiers that keep common license patterns, which include `/*!` and `/* @license`. A lot of software in this space *is* wise enough to mark their headers in this way.
+For me, managing licenses depends on the language.
 
-That being said, the license-header situation is a real nightmare in TypeScript and JavaScript. It's common to see repositories that just declare that they're under “the MIT license” (or whatnot), but include the license text *nowhere*. That's quite a conundrum because part of the license is that you *must* include the license text. Of course, the license doesn't restrict the original author, but this means that *technically*, to use source like this at all, you ought to add the license text that the author was too lazy to add. Otherwise, you're violating the license. For all my pedantry, I am willing to take situations like this as a clear sign that the author in question does not intend to hold users to those terms of the relevant license, but it is generally a sign of poor license literacy.
+In languages like C/C++, where code is not distributed in text form, I can offer no better solution than to go through each file meticulously to check for license information—`grep` is your friend here. It’s tedious, but this isn’t something you’re doing out of virtue—it’s a legal requirement.
+
+For languages like TypeScript/JavaScript, which are distributed in text form, it is sufficient to include the license comments themselves. To that end, I use `/*!` for license comments and ensure that my minifiers preserve common license patterns such as `/*!` and `/* @license`. A fair amount of software in this space is smart enough to mark license headers this way, though certainly not all.
+
+Unfortunately, the TypeScript/JavaScript/Node community is particularly terrible with licensing. It’s not uncommon to see projects that declare themselves to be under some license requiring attribution, but not to include the actual license text at all. Technically speaking, this means that to use such software, it’s the *user’s* job to add the license. While this situation suggests the author likely doesn’t intend to enforce these license terms, it’s generally a sign of poor license literacy.
+
+Perhaps the most important advice is just to become more license literate. Most open-source licenses are very short, and written in fairly readable English. If you understand what the most common licenses are and what they require, keeping track of your obligations isn’t too bad.
