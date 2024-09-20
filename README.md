@@ -36,7 +36,7 @@ Not quite.
 
 Let's say that the part of FFmpeg I'm using is the `arnndn` filter. When I check the LICENSE.md file, there's no mention of `af_arnndn.c`. Everything looks fine, so I don't add any special attribution.
 
-And now, I’ve violated the license of the authors of that file. `af_arnndn.c` is licensed under MIT, which requires that redistributions in binary form reproduce the copyright notice and license text. You could argue that providing the source code under LGPL satisfies this requirement, but that's a stretch. Unless you're bundling the source code directly with the binaries, you're probably not in compliance.
+And now, I’ve violated the license of the authors of that file. `af_arnndn.c` is licensed under the 2-cluse BSD license, which requires that redistributions in binary form reproduce the copyright notice and license text. You could argue that providing the source code under LGPL satisfies this requirement, but that's a stretch. Unless you're bundling the source code directly with the binaries, you're probably not in compliance.
 
 So, what went wrong? You assumed that the FFmpeg maintainers had done the work you were avoiding: meticulously cataloging the licensing requirements of every single file. But they didn’t, and FFmpeg's license file is incorrect and misleading because it hasn't been maintained.
 
